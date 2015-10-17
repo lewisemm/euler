@@ -17,6 +17,7 @@ public class Problem2{
 
 		}
 
+		// remember b started with value two; hence the (even + 2) below
 		System.out.println("The sum of even numbers is " + (even + 2) );
 	}
 }
