@@ -28,11 +28,12 @@ function isPalindrome(number) {
 
 function findPalindrome() {
   let upperLimit = 999 * 999, lowerLimit = 100 * 100
-  let unknownFactor;
+  let unknownFactor, sqrt;
 
   while (lowerLimit < upperLimit) {
     if (isPalindrome(upperLimit)) {
-      for (let i = 999; i >= 100; i--) {
+      sqrt = Math.ceil(Math.sqrt(upperLimit))
+      for (let i = sqrt; i >= 100; i--) {
         if (upperLimit % i === 0) {
           unknownFactor = upperLimit / i
           if (`${unknownFactor}`.length === 3) {
