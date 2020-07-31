@@ -1,6 +1,13 @@
+cache = {}
+
 function collatz(number) {
   let chain = 1
+  const origNumber = number
   while (number !== 1) {
+    if (number in cache) {
+      chain += cache[number]
+      break
+    }
     if (number % 2 == 0) {
       number = number / 2
     } 
@@ -9,6 +16,7 @@ function collatz(number) {
     }
     chain += 1
   }
+  cache[origNumber] = chain
   return chain
 }
 
@@ -31,5 +39,10 @@ console.log('number: ', number)
 const runningTime = endTime - startTime
 console.log(`Running time (s): ${runningTime / 1000}`)
 
+// stats before optimization
 // number:  { longest: 525, ans: 837799 }
 // Running time (s): 1.336
+
+// stats when optimized
+// number:  { longest: 556, ans: 837799 }
+// Running time (s): 0.181
