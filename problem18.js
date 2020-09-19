@@ -123,31 +123,36 @@ function sumArray(arr) {
   return sum
 }
 
-let max = 0
-let largest
-
-function dfs(graph, start, stack=[]) {
+function dft(graph, start, max, largest, stack=[]) {
   stack.push(start)
   let current = stack[stack.length - 1]
   if (typeof(graph[current]) === 'undefined') {
-    console.log('stack: ', stack)
     let sum = sumArray(stack)
-    console.log('current sum: ', sum)
-    console.log('current max: ', max)
     if (max < sum) {
       max = sum
-      console.log('larger stack: ', stack)
       largest = stack.slice()
     }
-    return stack
+    return { stack, max, largest }
   }
+  let result = null
   for (node of graph[current]) {
-    stack = dfs(graph, node, stack)
+    result = dft(graph, node, max, largest, stack)
+    stack = result.stack
     stack.pop()
+    max = result.max
+    largest = result.largest
   }
-  return stack
+  return { stack, max, largest }
 }
 
-dfs(graph, '75')
-console.log(max)
-console.log(largest)
+function problem18(start) {
+  const result = dft(graph, start, 0, null)
+  return result.max
+}
+
+const startTime = Date.now()
+const number = problem18('75')
+const endTime = Date.now()
+console.log('number: ', number)
+const runningTime = endTime - startTime
+console.log(`Running time (s): ${runningTime / 1000}`)
