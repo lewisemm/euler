@@ -115,37 +115,33 @@ const graph = {
   '31': ['4.0000', '23.00']
 }
 
-function sumArray(arr) {
-  let sum = 0
-  for (no of arr) {
-    sum += parseFloat(no)
-  }
-  return sum
-}
+let dynamic = {}
 
 function dft(graph, start, max, largest, stack=[]) {
   stack.push(start)
   let current = stack[stack.length - 1]
   if (typeof(graph[current]) === 'undefined') {
-    let sum = sumArray(stack)
-    if (max < sum) {
-      max = sum
+    if (dynamic[current] > max) {
+      max = dynamic[current]
       largest = stack.slice()
     }
-    return { stack, max, largest }
+    return { stack, max, largest, dynamic }
   }
   let result = null
   for (node of graph[current]) {
+    dynamic[node] = parseFloat(node) + parseFloat(dynamic[current])
     result = dft(graph, node, max, largest, stack)
     stack = result.stack
     stack.pop()
     max = result.max
     largest = result.largest
+    dynamic = result.dynamic
   }
-  return { stack, max, largest }
+  return { stack, max, largest, dynamic }
 }
 
 function problem18(start) {
+  dynamic[start] = parseFloat(start)
   const result = dft(graph, start, 0, null)
   return result.max
 }
@@ -156,3 +152,11 @@ const endTime = Date.now()
 console.log('number: ', number)
 const runningTime = endTime - startTime
 console.log(`Running time (s): ${runningTime / 1000}`)
+
+// Before Optimization
+// number:  1074
+// Running time (s): 0.017
+
+// After Optimization
+// number:  1074
+// Running time (s): 0.011
